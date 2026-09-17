@@ -1,0 +1,56 @@
+@startuml
+!pragma layout smetana
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam backgroundColor white
+title Bridge — Controles remotos e aparelhos
+
+class ControleRemoto <<Abstraction>> {
+  #dispositivo : Dispositivo
+  +ControleRemoto(dispositivo : Dispositivo)
+  +alternarEnergia() : void
+  +aumentarVolume() : void
+  +diminuirVolume() : void
+}
+class ControleRemotoAvancado <<RefinedAbstraction>> {
+  +ControleRemotoAvancado(dispositivo : Dispositivo)
+  +silenciar() : void
+}
+interface Dispositivo <<Implementor>> {
+  +getNome() : String
+  +estaLigado() : boolean
+  +ligar() : void
+  +desligar() : void
+  +getVolume() : int
+  +setVolume(volume : int) : void
+}
+class Televisao <<ConcreteImplementor>> {
+  -ligado : boolean
+  -volume : int
+  +getNome() : String
+  +estaLigado() : boolean
+  +ligar() : void
+  +desligar() : void
+  +getVolume() : int
+  +setVolume(volume : int) : void
+}
+class Radio <<ConcreteImplementor>> {
+  -ligado : boolean
+  -volume : int
+  +getNome() : String
+  +estaLigado() : boolean
+  +ligar() : void
+  +desligar() : void
+  +getVolume() : int
+  +setVolume(volume : int) : void
+}
+ControleRemoto <|-- ControleRemotoAvancado
+ControleRemoto "0..*" --> "1" Dispositivo : ponte / delega
+Dispositivo <|.. Televisao
+Dispositivo <|.. Radio
+note bottom of ControleRemoto
+  Controles evoluem independentemente
+  dos tipos de aparelho.
+end note
+@enduml
+
